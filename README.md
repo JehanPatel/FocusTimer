@@ -107,4 +107,4 @@ The installer copies the app, creates Start Menu/Desktop shortcuts, checks for W
 
 ## Repository Notes
 
-Generated binaries, build output, local Go caches, browser profiles, and local Wails tooling should not be committed. See `.gitignore`.
+To download, check the zip from versions
