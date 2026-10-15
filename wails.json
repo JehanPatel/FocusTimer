@@ -1,0 +1,14 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "FocusTimer",
+  "outputfilename": "FocusTimer",
+  "frontend:install": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Write-Host 'No frontend install required'\"",
+  "frontend:build": "powershell -NoProfile -ExecutionPolicy Bypass -File ..\\scripts\\build-frontend.ps1",
+  "frontend:dev:watcher": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Write-Host 'Static frontend mode'\"",
+  "frontend:dev:serverUrl": "",
+  "author": {
+    "name": "TDS",
+    "email": ""
+  }
+}
+

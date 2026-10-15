@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Timer</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <main class="desktop">
+      <section class="app-window" aria-label="Focus timer app">
+        <header class="window-bar" data-wails-drag>
+          <div class="brand" data-wails-drag>
+            <span class="brand-mark">▲</span>
+            <span>FOCUS</span>
+            <span>•</span>
+            <span class="version">(Go v1.2)</span>
+          </div>
+          <div class="window-controls" aria-label="Window controls">
+            <button class="micro-control" data-action="minimise" aria-label="Minimize">-</button>
+            <button class="micro-control" data-action="maximise" aria-label="Maximize">□</button>
+            <button class="micro-control close" data-action="close" aria-label="Close">x</button>
+          </div>
+        </header>
+
+        <div class="window-body">
+          <nav class="sidebar" aria-label="Quick actions">
+            <button class="nav-item active" data-scroll-target="timer" aria-label="Timer"><span>◷</span></button>
+            <button class="nav-item exit" data-action="close" aria-label="Exit"><span>↱</span></button>
+          </nav>
+
+          <section class="focus-scroll" id="focusScroll">
+            <div class="focus-surface">
+              <div class="top-strip">
+                <div class="title-capsule">[ • WRITING GO BACKEND ]</div>
+              </div>
+
+              <section class="timer-stage" id="timerStage" aria-label="Countdown timer">
+                <div class="timer-readout" id="timerReadout">15:00</div>
+                <div class="session-row">
+                  <div>
+                    <div class="session-label">FOCUS SESSION <span id="sessionIndex">1</span> of 4</div>
+                    <div class="dots" id="sessionDots" aria-label="Session progress"></div>
+                  </div>
+                  <svg class="progress-ring" viewBox="0 0 72 72" aria-hidden="true">
+                    <circle class="ring-track" cx="36" cy="36" r="29"></circle>
+                    <circle class="ring-value" id="progressRing" cx="36" cy="36" r="29"></circle>
+                  </svg>
+                </div>
+              </section>
+
+              <section class="task-panel" aria-label="Task list">
+                <div class="rule-title"><span></span><strong>TASK LIST</strong><span></span></div>
+                <div class="task-list" id="taskList"></div>
+                <form class="task-add" id="taskForm">
+                  <input id="taskInput" type="text" autocomplete="off" placeholder="Add task" />
+                  <button type="submit">ADD</button>
+                </form>
+              </section>
+
+              <section class="break-panel" aria-label="Break configuration">
+                <div class="section-label">BREAK CONFIG</div>
+                <div class="break-options" role="group" aria-label="Break duration">
+                  <label class="break-choice active">
+                    <input id="shortBreakInput" type="number" min="1" max="180" step="1" />
+                    <span>SHORT BREAK</span>
+                  </label>
+                  <label class="break-choice">
+                    <input id="longBreakInput" type="number" min="1" max="180" step="1" />
+                    <span>LONG BREAK</span>
+                  </label>
+                </div>
+              </section>
+
+              <section class="music-panel" aria-label="Music source">
+                <div class="music-label">MUSIC SOURCE</div>
+                <div class="source-grid">
+                  <button class="source-button" data-action="spotify">
+                    <span class="button-text">[ i CONNECT SPOTIFY ]</span>
+                    <span class="spotify-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
+                  </button>
+                  <button class="source-button" data-action="spotify-help">
+                    <span class="button-text">[ ? HOW TO CONNECT ]</span>
+                  </button>
+                  <button class="source-button" data-action="audio">
+                    <span class="button-text">[ <span class="folder-glyph" aria-hidden="true"></span> IMPORT AUDIO ]</span>
+                    <small>MP3 / WAV / M4A / OGG</small>
+                  </button>
+                </div>
+
+                <div class="playback-row" id="dropZone">
+                  <audio id="audioPlayer"></audio>
+                  <div class="track-copy">
+                    <div class="track-title"><span>♪</span><span id="trackName">No audio selected</span></div>
+                    <div class="track-detail" id="trackDetail">Import an MP3 or connect Spotify</div>
+                  </div>
+                  <div class="visualizer" id="visualizer" aria-hidden="true">
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                  <div class="track-time" id="trackTime">00:00 / 00:00</div>
+                  <button class="play-button" id="playPause" aria-label="Play or pause">▶</button>
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+
+        <footer class="footer-bar">
+          <div class="shortcuts">
+            <span>[Space] Pause</span>
+            <span>[R] Reset</span>
+            <span>[S] Spotify</span>
+            <span>[N] Exit</span>
+          </div>
+          <button class="footer-pin" data-action="always-top-footer">Always on top</button>
+        </footer>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="spotifyModal" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="spotifyTitle">
+        <button class="modal-close" data-modal-close aria-label="Close">x</button>
+        <h2 id="spotifyTitle">Connect Spotify</h2>
+        <p class="modal-copy">Use PKCE login with your Spotify Client ID, or paste an existing access token.</p>
+        <label>
+          <span>Client ID</span>
+          <input id="spotifyClientId" type="text" autocomplete="off" spellcheck="false" />
+        </label>
+        <label>
+          <span>Access token fallback</span>
+          <textarea id="spotifyAccessToken" rows="3" spellcheck="false"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button data-action="spotify-help" type="button">HOW TO CONNECT</button>
+          <button id="spotifyConnectButton" type="button">CONNECT</button>
+        </div>
+        <div class="modal-status" id="spotifyStatus"></div>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="helpModal" hidden>
+      <section class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <button class="modal-close" data-modal-close aria-label="Close">x</button>
+        <h2 id="helpTitle">How To Connect</h2>
+        <ol>
+          <li>Go to the Spotify Developer Dashboard and create an app.</li>
+          <li>Copy the app Client ID.</li>
+          <li>Add this redirect URI in the app settings: <code>http://127.0.0.1:8000/callback</code></li>
+          <li>Return here, paste the Client ID, and press CONNECT.</li>
+          <li>Approve the browser permission prompt. Focus will connect when Spotify redirects back.</li>
+        </ol>
+        <p class="modal-copy">If OAuth is blocked, paste a valid Spotify access token in the fallback field.</p>
+      </section>
+    </div>
+  </body>
+</html>

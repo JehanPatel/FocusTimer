@@ -1,0 +1,9 @@
+build/
+frontend/dist/
+frontend/wailsjs/
+tools/
+.gocache/
+.gomodcache/
+.gotelemetry/
+.edge-profile/
+
