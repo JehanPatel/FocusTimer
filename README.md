@@ -1,5 +1,7 @@
 # FocusTimer
 
+<img width="1919" height="1021" alt="focus-ui-smoke" src="https://github.com/user-attachments/assets/fa88e38f-0c7b-42c7-b37c-83fc98494fc5" />
+
 A high-contrast monochrome Pomodoro desktop app built with Go and Wails.
 
 The app includes a frameless desktop UI, editable tasks, editable break durations, local audio import/playback, Spotify OAuth connection support, keyboard shortcuts, and an always-on-top footer toggle.
